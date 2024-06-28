@@ -1,0 +1,13 @@
+server:
+  port: 9051
+spring:
+  application:
+    name: middle-service
+feign:
+  client:
+    config:
+      core-service:
+        name: core-service
+        url: http://localhost:9050/api/v1/core
+        connectTimeout: 5000
+        readTimeout: 5000
