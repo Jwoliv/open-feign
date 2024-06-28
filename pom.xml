@@ -24,6 +24,7 @@
     <modules>
         <module>core-service</module>
         <module>middle-service</module>
+        <module>task-service</module>
     </modules>
     <scm>
         <connection/>

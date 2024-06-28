@@ -1,0 +1,21 @@
+server:
+  port: 9052
+spring:
+  application:
+    name: task-service
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+feign:
+  client:
+    config:
+      core-service:
+        name: core-service
+        url: http://localhost:9050/api/v1/core
+        connectTimeout: 5000
+        readTimeout: 5000
