@@ -6,8 +6,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @EnableKafka
 @SpringBootApplication
-public class CoreServiceApplication {
+public class ListenerServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CoreServiceApplication.class, args);
+        SpringApplication.run(ListenerServiceApplication.class, args);
     }
 }

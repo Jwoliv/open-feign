@@ -26,6 +26,7 @@
         <module>core-service</module>
         <module>middle-service</module>
         <module>task-service</module>
+        <module>listener-service</module>
     </modules>
     <scm>
         <connection/>
@@ -49,6 +50,10 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
         </dependency>
 
         <dependency>

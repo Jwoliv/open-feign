@@ -1,0 +1,22 @@
+server:
+  port: 9053
+listener:
+  config:
+    topic:
+      core-topic:
+        name: core-topic
+        partitions: 10
+        replicas: 1
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: 1
+        spring:
+          json:
+            add:
+              type:
+                headers: false
