@@ -3,6 +3,7 @@ package org.example.service.impl;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.example.dto.RecordDto;
+import org.example.mapper.RecordMapper;
 import org.example.modal.Record;
 import org.example.repository.RecordRepository;
 import org.example.service.RecordTaskServiceI;
@@ -24,6 +25,8 @@ public class RecordServiceImpl implements RecordTaskServiceI {
     private SpecialRecordServiceI specialRecordService;
     @Setter(onMethod = @__({@Autowired}))
     private KafkaTemplate<String, Object> kafkaTemplate;
+    @Setter(onMethod = @__({@Autowired}))
+    private RecordMapper recordMapper;
 
     @Override
     @SneakyThrows
@@ -40,7 +43,7 @@ public class RecordServiceImpl implements RecordTaskServiceI {
 
     private void sendToTopic(Record savedRecord) {
         if (isSpecialRecord(savedRecord)) {
-            RecordDto recordDto = buildRecordDto(savedRecord);
+            RecordDto recordDto = recordMapper.mapToDto(savedRecord);
             kafkaTemplate.send(topicName, recordDto);
         }
     }
