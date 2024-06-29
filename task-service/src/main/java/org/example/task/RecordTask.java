@@ -12,9 +12,14 @@ import java.util.Random;
 public class RecordTask {
     @Setter(onMethod = @__({@Autowired}))
     private RecordTaskServiceI recordTaskService;
+    private final Random random = new Random();
 
     @Scheduled(cron = "${task.save-special-task.cron}")
     public void taskRecord() {
-        recordTaskService.saveRecord(new Random(100).nextLong());
+        recordTaskService.saveRecord(Math.abs(getRandomLong()));
+    }
+
+    private Long getRandomLong() {
+        return random.nextLong();
     }
 }
