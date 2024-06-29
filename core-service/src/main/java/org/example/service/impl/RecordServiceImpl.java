@@ -4,8 +4,11 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.example.dto.RecordDto;
 import org.example.modal.Record;
+import org.example.modal.SpecialRecord;
 import org.example.repository.RecordRepository;
+import org.example.repository.SpecialRecordRepository;
 import org.example.service.RecordTaskServiceI;
+import org.example.service.SpecialRecordServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,6 +23,8 @@ public class RecordServiceImpl implements RecordTaskServiceI {
     @Setter(onMethod = @__({@Autowired}))
     private RecordRepository recordRepository;
     @Setter(onMethod = @__({@Autowired}))
+    private SpecialRecordRepository specialRecordRepository;
+    @Setter(onMethod = @__({@Autowired}))
     private KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
@@ -30,22 +35,24 @@ public class RecordServiceImpl implements RecordTaskServiceI {
         sendToTopic(savedRecord);
     }
 
+    @Override
+    public void saveSpecialRecord(RecordDto recordDto) {
+        SpecialRecord specialRecord = new SpecialRecord(recordDto.getTitle(), recordDto.getCreatedAt(), recordDto.getId());
+        specialRecordRepository.save(specialRecord);
+    }
 
     private void sendToTopic(Record savedRecord) {
-        if (isEvenNumber(savedRecord)) {
+        if (isSpecialRecord(savedRecord)) {
             RecordDto recordDto = buildRecordDto(savedRecord);
             kafkaTemplate.send(topicName, recordDto);
         }
     }
 
     private Record buildRecord(RecordDto record) {
-        return Record.builder()
-                .title(record.getTitle())
-                .createdAt(record.getCreatedAt())
-                .build();
+        return new Record(record.getTitle(), record.getCreatedAt());
     }
 
-    private Boolean isEvenNumber(Record savedRecord) {
+    private Boolean isSpecialRecord(Record savedRecord) {
         return savedRecord.getId() % 2 == 0;
     }
 

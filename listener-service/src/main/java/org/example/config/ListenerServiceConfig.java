@@ -1,5 +1,7 @@
 package org.example.config;
 
+import feign.Logger;
+import feign.Request;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -16,15 +18,20 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class KafkaConfig {
+public class ListenerServiceConfig {
     @Value("${listener.config.topic.core-topic.name}")
     private String name;
     @Value("${listener.config.topic.core-topic.partitions}")
     private Integer partitions;
     @Value("${listener.config.topic.core-topic.replicas}")
     private Integer replicas;
+    @Value("${feign.client.config.core-service.connectTimeout}")
+    private Integer connectionTimeout;
+    @Value("${feign.client.config.core-service.readTimeout}")
+    private Integer readTimeout;
 
     @Bean
     public NewTopic topic() {
@@ -53,5 +60,15 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, RecordDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
+    }
+
+    @Bean
+    public Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
+    }
+
+    @Bean
+    public Request.Options requestOptions() {
+        return new Request.Options(connectionTimeout, TimeUnit.MILLISECONDS, readTimeout, TimeUnit.MILLISECONDS, true);
     }
 }

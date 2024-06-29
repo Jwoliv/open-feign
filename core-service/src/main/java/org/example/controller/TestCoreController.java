@@ -22,4 +22,9 @@ public class TestCoreController {
     public void saveRecord(@RequestBody RecordDto record) {
         recordTaskService.saveRecord(record);
     }
+
+    @PostMapping("/save-special-record")
+    public void saveSpecialRecord(@RequestBody RecordDto recordDto) {
+        recordTaskService.saveSpecialRecord(recordDto);
+    }
 }

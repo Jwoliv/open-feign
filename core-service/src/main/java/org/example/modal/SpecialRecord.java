@@ -1,29 +1,29 @@
 package org.example.modal;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
 @Setter
-@Builder
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "records")
-public class Record {
+@Table(name = "special_record")
+public class SpecialRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
-
+    private Long id;
     private String title;
     private LocalDateTime createdAt;
+    private Long oldId;
 
-
-    public Record(String title, LocalDateTime createdAt) {
+    public SpecialRecord(String title, LocalDateTime createdAt, Long oldId) {
         this.title = title;
         this.createdAt = createdAt;
+        this.oldId = oldId;
     }
 }

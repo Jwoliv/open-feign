@@ -20,3 +20,11 @@ spring:
             add:
               type:
                 headers: false
+feign:
+  client:
+    config:
+      core-service:
+        name: core-service
+        url: http://localhost:9050/api/v1/core
+        connectTimeout: 5000
+        readTimeout: 5000
