@@ -1,6 +1,9 @@
 package org.example.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.example.dto.RecordDto;
 import org.example.modal.Record;
 import org.example.repository.RecordRepository;
@@ -19,10 +22,10 @@ public class RecordServiceImpl implements RecordTaskServiceI {
     @Setter(onMethod = @__({@Autowired}))
     private RecordRepository recordRepository;
     @Setter(onMethod = @__({@Autowired}))
-    private KafkaTemplate<String, String> kafkaTemplate;
-
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
+    @SneakyThrows
     public void saveRecord(RecordDto record) {
         Record recordEntity = Record.builder()
                 .title(record.getTitle())
@@ -30,7 +33,12 @@ public class RecordServiceImpl implements RecordTaskServiceI {
                 .build();
         Record savedRecord = recordRepository.save(recordEntity);
         if (savedRecord.getId() % 2 == 0) {
-            kafkaTemplate.send(topicName, savedRecord.toString());
+            RecordDto recordDto = RecordDto.builder()
+                    .id(savedRecord.getId())
+                    .title(savedRecord.getTitle())
+                    .createdAt(savedRecord.getCreatedAt())
+                    .build();
+            kafkaTemplate.send(topicName, recordDto);
         }
     }
 }
