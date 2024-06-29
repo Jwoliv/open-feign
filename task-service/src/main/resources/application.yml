@@ -11,3 +11,6 @@ feign:
         url: http://localhost:9050/api/v1/core
         connectTimeout: 5000
         readTimeout: 5000
+task:
+  save-special-task:
+    cron: '* * * * * *'

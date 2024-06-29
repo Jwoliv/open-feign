@@ -13,8 +13,8 @@ public class RecordTask {
     @Setter(onMethod = @__({@Autowired}))
     private RecordTaskServiceI recordTaskService;
 
-    @Scheduled(cron = "* * * * * *")
+    @Scheduled(cron = "${task.save-special-task.cron}")
     public void taskRecord() {
-        recordTaskService.saveRecord(new Random().nextLong());
+        recordTaskService.saveRecord(new Random(100).nextLong());
     }
 }

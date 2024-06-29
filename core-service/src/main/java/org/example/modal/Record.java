@@ -17,8 +17,9 @@ public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
 
