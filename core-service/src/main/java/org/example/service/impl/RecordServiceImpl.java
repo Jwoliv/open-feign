@@ -23,7 +23,7 @@ public class RecordServiceImpl implements RecordTaskServiceI {
     @Setter(onMethod = @__({@Autowired}))
     private RecordRepository recordRepository;
     @Setter(onMethod = @__({@Autowired}))
-    private SpecialRecordRepository specialRecordRepository;
+    private SpecialRecordServiceI specialRecordService;
     @Setter(onMethod = @__({@Autowired}))
     private KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -37,8 +37,7 @@ public class RecordServiceImpl implements RecordTaskServiceI {
 
     @Override
     public void saveSpecialRecord(RecordDto recordDto) {
-        SpecialRecord specialRecord = new SpecialRecord(recordDto.getTitle(), recordDto.getCreatedAt(), recordDto.getId());
-        specialRecordRepository.save(specialRecord);
+        specialRecordService.saveSpecialRecord(recordDto);
     }
 
     private void sendToTopic(Record savedRecord) {

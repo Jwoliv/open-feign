@@ -14,5 +14,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface TestCore {
 
     @PostMapping("/save-special-record")
-    public void saveSpecialRecord(@RequestBody RecordDto recordDto);
+    void saveSpecialRecord(@RequestBody RecordDto recordDto);
 }
