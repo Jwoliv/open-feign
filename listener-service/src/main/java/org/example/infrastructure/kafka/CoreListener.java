@@ -9,6 +9,6 @@ public class CoreListener {
 
     @KafkaListener(topics = "${listener.config.topic.core-topic.name}", groupId = "default")
     public void listen(RecordDto element) {
-        System.out.println(element);
+        System.out.println(element.getTitle());
     }
 }

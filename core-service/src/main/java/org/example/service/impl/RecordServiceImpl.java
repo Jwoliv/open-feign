@@ -25,18 +25,36 @@ public class RecordServiceImpl implements RecordTaskServiceI {
     @Override
     @SneakyThrows
     public void saveRecord(RecordDto record) {
-        Record recordEntity = Record.builder()
-                .title(record.getTitle())
-                .createdAt(record.getCreatedAt())
-                .build();
+        Record recordEntity = buildRecord(record);
         Record savedRecord = recordRepository.save(recordEntity);
-        if (savedRecord.getId() % 2 == 0) {
-            RecordDto recordDto = RecordDto.builder()
-                    .id(savedRecord.getId())
-                    .title(savedRecord.getTitle())
-                    .createdAt(savedRecord.getCreatedAt())
-                    .build();
+        sendToTopic(savedRecord);
+    }
+
+
+    private void sendToTopic(Record savedRecord) {
+        if (isEvenNumber(savedRecord)) {
+            RecordDto recordDto = buildRecordDto(savedRecord);
             kafkaTemplate.send(topicName, recordDto);
         }
     }
+
+    private Record buildRecord(RecordDto record) {
+        return Record.builder()
+                .title(record.getTitle())
+                .createdAt(record.getCreatedAt())
+                .build();
+    }
+
+    private Boolean isEvenNumber(Record savedRecord) {
+        return savedRecord.getId() % 2 == 0;
+    }
+
+    private RecordDto buildRecordDto(Record savedRecord) {
+        return RecordDto.builder()
+                .id(savedRecord.getId())
+                .title(savedRecord.getTitle())
+                .createdAt(savedRecord.getCreatedAt())
+                .build();
+    }
+
 }
