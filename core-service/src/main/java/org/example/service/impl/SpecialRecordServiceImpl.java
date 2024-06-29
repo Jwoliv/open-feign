@@ -20,7 +20,11 @@ public class SpecialRecordServiceImpl implements SpecialRecordServiceI {
         specialRecordRepository.save(specialRecord);
     }
 
-    private static SpecialRecord buildSpecialRecord(RecordDto recordDto) {
-        return new SpecialRecord(recordDto.getTitle(), recordDto.getCreatedAt(), recordDto.getId());
+    private SpecialRecord buildSpecialRecord(RecordDto recordDto) {
+        return SpecialRecord.builder()
+                .title(recordDto.getTitle())
+                .createdAt(recordDto.getCreatedAt())
+                .oldId(recordDto.getId())
+                .build();
     }
 }

@@ -1,9 +1,7 @@
 package org.example.modal;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +9,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "special_record")
 public class SpecialRecord {
     @Id
@@ -23,10 +23,4 @@ public class SpecialRecord {
     private LocalDateTime createdAt;
     @Column(name = "old_id", nullable = false, unique = true)
     private Long oldId;
-
-    public SpecialRecord(String title, LocalDateTime createdAt, Long oldId) {
-        this.title = title;
-        this.createdAt = createdAt;
-        this.oldId = oldId;
-    }
 }
